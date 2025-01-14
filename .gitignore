@@ -52,4 +52,9 @@ dist/bundle.js
 
 # Ignore public folder for testing
 public/
+
+# Ignore index.html used for testing
 index.html
+
+# Ignore .txt files
+notes.txt

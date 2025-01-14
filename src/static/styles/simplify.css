@@ -1,0 +1,93 @@
+/* --- Simplify Variables --- */
+:root {
+  /* --- Base Table Colors --- */
+  --table-bg-color: #f3f3f3;
+  --table-bd-color: #898989;
+  --table-fg-color: #0d0d0e;
+
+  /* --- Base Variables --- */
+  --base-font-size: 12px;
+  --base-font-family: system-ui, sans-serif;
+  --base-font-weight: 500;
+  --base-padding: 3px;
+  --base-margin: 3px;
+  --base-gap: 3px;
+  --base-border-radius: 8px;
+  --base-border-width: 2px;
+  --base-transition: all 0.3s ease;
+
+  /* --- Base Sizing Variables --- */
+  --base-width: 100%;
+  --base-height: auto;
+  --base-min-height: 400px;
+  --base-max-height: 800px;
+}
+
+body {
+  padding: 1rem; /** Test padding. Will remove later */
+}
+
+/* --- Simplify Reset --- */
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+table {
+  border-collapse: collapse;
+  width: max-content;
+}
+
+
+/*
+Base Containers
+--------------------------
+ */
+
+/* --- simplify-table --- */
+.simplify-table {
+  background-color: var(--table-bg-color);
+  border: var(--base-border-width) solid var(--table-bd-color);
+  color: var(--table-fg-color);
+  user-select: none;
+  border-radius: var(--base-border-radius);
+  font-family: var(--base-font-family);
+  font-weight: var(--base-font-weight);
+  font-size: var(--base-font-size);
+  display: grid;
+  grid-template-rows: 40px auto 1fr 40px;
+  width: var(--base-width);
+  height: var(--base-height);
+  min-height: var(--base-min-height);
+  max-height: var(--base-max-height);
+}
+
+/* --- Top container --- */
+.top-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-inline: var(--base-padding);
+}
+
+/* --- Action container --- */
+.action-container {
+  display: flex;
+  gap: var(--base-gap);
+}
+
+/* --- Middle container --- */
+.middle-container {
+  display: grid;
+}
+
+/* --- Bottom container --- */
+.bottom-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-inline: var(--base-padding);
+}
