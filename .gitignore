@@ -49,3 +49,7 @@ src/static/icons/*.png
 
 # Ignore the output of Webpack
 dist/bundle.js
+
+# Ignore public folder for testing
+public/
+index.html

@@ -1,7 +1,8 @@
 const path = require('path');
 
 module.exports = {
-  entry: './src/core/components/renderer.js', // Adjust this entry point as needed
+  mode: 'development', // or 'production'
+  entry: './src/core/models/simplifyTable.js', // Set simplifyTable as the entry point
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
@@ -32,7 +33,7 @@ module.exports = {
     ],
   },
   devServer: {
-    contentBase: path.join(__dirname, 'dist'),
+    contentBase: path.join(__dirname, 'public'),
     compress: true,
     port: 9000,
   },
