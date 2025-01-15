@@ -41,10 +41,51 @@ table {
   width: max-content;
 }
 
+/*
+BASE FLEXBOX LAYOUTS
+-----------------------------------
+The below styles are for the base flexbox layouts.
+*/
+.flex-row {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.flex-col {
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.flex-row-wrap {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.flex-col-wrap {
+  display: flex;
+  flex-flow: column wrap;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.base-gap {
+  gap: var(--base-gap);
+}
 
 /*
-Base Containers
---------------------------
+BASE CONTAINER AND CHILD ELEMENTS
+-----------------------------------
+The below styles are for the base container and its child elements.
  */
 
 /* --- simplify-table --- */
@@ -93,3 +134,4 @@ Base Containers
   padding-inline: var(--base-padding);
   border-top: 1px solid var(--table-bd-color);
 }
+

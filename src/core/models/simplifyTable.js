@@ -36,8 +36,8 @@ export class SimplifyTable extends TableRenderer {
 
   }
 
-  init() {
-    this.createBaseContainers();
-    this.createTable();
+  async init() {
+    // Render table elements
+    this.renderElements();
   }
 }
