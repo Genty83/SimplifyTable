@@ -71,6 +71,7 @@ Base Containers
   justify-content: space-between;
   align-items: center;
   padding-inline: var(--base-padding);
+  border-bottom: 1px solid var(--table-bd-color);
 }
 
 /* --- Action container --- */
@@ -90,4 +91,5 @@ Base Containers
   justify-content: space-between;
   align-items: center;
   padding-inline: var(--base-padding);
+  border-top: 1px solid var(--table-bd-color);
 }
