@@ -16,6 +16,18 @@
   --cell-alternate-bg-color: #e3e3e3;
   --cell-alternate-fg-color: #0d0d0e;
 
+  /* --- Table Ui colors --- */
+  --table-ui-bg-color: #f3f3f3;
+  --table-ui-bd-color: #cccccc;
+  --table-ui-fg-color: #0d0d0e;
+  --table-ui-hover-bg-color: #e3e3e3;
+  --table-ui-hover-bd-color: #415cd3;
+  --table-ui-hover-fg-color: #0d0d0e;
+  --table-ui-active-bg-color: #415cd3;
+  --table-ui-active-bd-color: #415cd3;
+  --table-ui-active-fg-color: #ffffff;
+  --table-ui-placeholder-fg-color: #cccccc;
+
   /* --- Base Variables --- */
   --base-font-size: 12px;
   --base-font-family: system-ui, sans-serif;
@@ -59,6 +71,10 @@ table {
 thead tr {
   position: sticky;
   top: 0;
+}
+
+thead {
+  position: relative;
 }
 
 tr {
@@ -178,10 +194,22 @@ The below styles are for the table header.
   min-height: var(--header-min-height);
   font-family: inherit;
   font-size: inherit;
-  font-weight: inherit;
+  font-weight: 600;
   padding: 5px;
 }
 
+.table-header:first-child {
+  margin: auto;
+}
+
+.header-bottom-border {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: var(--base-border-width);
+  background-color: var(--header-bd-color);
+}
 
 /*
 TABLE CELL STYING 
@@ -206,4 +234,49 @@ The below styles are for the table cells.
 
 .table-cell:first-child {
   margin: auto;
+}
+
+
+/*
+TABLE UI CONTROLS STYING 
+-----------------------------------
+The below styles are for the table ui controls.
+*/
+
+/* --- Table UI Controls --- */
+.table-control {
+  min-height: 30px;
+  border-radius: var(--base-border-radius);
+  padding-inline: var(--base-padding);
+  outline: none;
+  border: 1px solid var(--table-ui-bd-color);
+  background-color: var(--table-ui-bg-color);
+  color: var(--table-ui-fg-color);
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  transition: var(--base-transition);
+}
+
+.table-control:focus {
+  outline: 2px solid var(--table-ui-active-bg-color);
+  outline-offset: 1px;
+}
+
+/* --- Header Sort Button --- */
+.header-sort-btn {
+  background-color: transparent;
+  border: none;
+  color: var(--table-ui-fg-color);
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  cursor: pointer;
+  transition: var(--base-transition);
+  padding: 4px;
+  border-radius: var(--base-border-radius);
+}
+
+.header-sort-btn:hover {
+  background-color: var(--table-ui-hover-bg-color);
 }

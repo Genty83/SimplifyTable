@@ -58,7 +58,7 @@ export class SimplifyTable extends TableRenderer {
 
   renderTable() {
     this.header = new Header(this, this.options);
-    this.header.renderHeaders();
+    this.header.renderHeaders(this.uniqueColumnValues);
     this.body = new Body(this, this.options);
     this.body.renderBody();
   }
@@ -68,24 +68,54 @@ export class SimplifyTable extends TableRenderer {
    */
   async getData() {
     try {
-      const data = await this.fetchApi.fetch(
-        {
-          page: this.currentPage,
-          limit: this.rowsPerPage,
-        }
-      );
+      const data = await this.fetchApi.fetch({
+        page: this.currentPage,
+        limit: this.rowsPerPage,
+      });
       this.data = {
         results: data.results || [],
         totalResults: data.totalResults || 0,
       };
+
       // Extract headers from data.results and set this.tableInstance.headers
       if (this.data.results.length > 0) {
         this.headers = Object.keys(this.data.results[0]);
       } else {
         this.headers = [];
       }
+
+      // Get unique column values
+      this.uniqueColumnValues = this.getUniqueColumnValues(
+        this.data.results,
+        this.headers
+      );
     } catch (error) {
       console.error("Error fetching data:", error);
     }
+  }
+
+  /**
+   * Creates a map of unique values for each column from the provided data.
+   * @param {Array} results - The data results array.
+   * @param {Array} headers - The headers array.
+   * @returns {Object} An object containing unique values for each column.
+   */
+  getUniqueColumnValues(results, headers) {
+    const uniqueColumnValues = {};
+    results.forEach((row) => {
+      headers.forEach((header) => {
+        if (!uniqueColumnValues[header]) {
+          uniqueColumnValues[header] = new Set();
+        }
+        uniqueColumnValues[header].add(row[header]);
+      });
+    });
+
+    // Convert sets to arrays if needed
+    Object.keys(uniqueColumnValues).forEach((header) => {
+      uniqueColumnValues[header] = Array.from(uniqueColumnValues[header]);
+    });
+
+    return uniqueColumnValues;
   }
 }
