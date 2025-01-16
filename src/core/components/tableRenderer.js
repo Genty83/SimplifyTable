@@ -103,18 +103,24 @@ export class TableRenderer {
    * Create table elements including thead and tbody.
    */
   createTableElements() {
+    this.middleContainer = createBaseElement({
+      tag: "div",
+      attributes: { class: "middle-container" },
+    });
+
     this.table = createBaseElement({
       tag: "table",
       attributes: { id: this.tableId },
     });
 
-    this.tableHead = createBaseElement({ tag: "thead" });
-    this.tableBody = createBaseElement({ tag: "tbody" });
+    this.thead = createBaseElement({ tag: "thead" });
+    this.tbody = createBaseElement({ tag: "tbody" });
 
-    this.table.appendChild(this.tableHead);
-    this.table.appendChild(this.tableBody);
+    this.table.appendChild(this.thead);
+    this.table.appendChild(this.tbody);
+    this.middleContainer.appendChild(this.table);
 
-    this.container.appendChild(this.table);
+    this.container.appendChild(this.middleContainer);
   }
 
   /**

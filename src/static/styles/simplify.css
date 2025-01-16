@@ -4,6 +4,17 @@
   --table-bg-color: #f3f3f3;
   --table-bd-color: #898989;
   --table-fg-color: #0d0d0e;
+  /* --- Table Header Colors --- */
+  --header-bg-color: linear-gradient(#bbbbbb, #dddddd);
+  --header-bd-color: #415cd3;
+  --header-fg-color: #0d0d0e;
+
+  /* --- Table Cells --- */
+  --cell-bg-color: #f3f3f3;
+  --cell-gridline-color: #cccccc;
+  --cell-fg-color: #0d0d0e;
+  --cell-alternate-bg-color: #e3e3e3;
+  --cell-alternate-fg-color: #0d0d0e;
 
   /* --- Base Variables --- */
   --base-font-size: 12px;
@@ -21,6 +32,10 @@
   --base-height: auto;
   --base-min-height: 400px;
   --base-max-height: 800px;
+  --header-min-height: 40px;
+  --row-height: 35px;
+  --top-container-height: 40px;
+  --bottom-container-height: 40px;
 }
 
 body {
@@ -39,6 +54,20 @@ body {
 table {
   border-collapse: collapse;
   width: max-content;
+}
+
+thead tr {
+  position: sticky;
+  top: 0;
+}
+
+tr {
+  height: var(--row-height);
+  background-color: var(--cell-bg-color);
+}
+
+tr:nth-child(even) {
+  background-color: var(--cell-alternate-bg-color);
 }
 
 /*
@@ -99,7 +128,7 @@ The below styles are for the base container and its child elements.
   font-weight: var(--base-font-weight);
   font-size: var(--base-font-size);
   display: grid;
-  grid-template-rows: 40px auto 1fr 40px;
+  grid-template-rows: var(--top-container-height) auto 1fr var(--bottom-container-height);
   width: var(--base-width);
   height: var(--base-height);
   min-height: var(--base-min-height);
@@ -124,6 +153,7 @@ The below styles are for the base container and its child elements.
 /* --- Middle container --- */
 .middle-container {
   display: grid;
+  overflow: auto;
 }
 
 /* --- Bottom container --- */
@@ -135,3 +165,45 @@ The below styles are for the base container and its child elements.
   border-top: 1px solid var(--table-bd-color);
 }
 
+/*
+TABLE HEADER STYING 
+-----------------------------------
+The below styles are for the table header.
+*/
+
+/* --- Header --- */
+.table-header {
+  background-color: var(--header-bg-color);
+  color: var(--header-fg-color);
+  min-height: var(--header-min-height);
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  padding: 5px;
+}
+
+
+/*
+TABLE CELL STYING 
+-----------------------------------
+The below styles are for the table cells.
+*/
+
+/* --- Table Cell --- */
+.table-cell {
+  padding: var(--base-padding);
+  border-bottom: 1px solid var(--cell-gridline-color);
+  background-color: transparent;
+  color: var(--cell-fg-color);
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+.table-cell:nth-child(even) {
+  color: var(--cell-alternate-fg-color);
+}
+
+.table-cell:first-child {
+  margin: auto;
+}
