@@ -280,3 +280,31 @@ The below styles are for the table ui controls.
 .header-sort-btn:hover {
   background-color: var(--table-ui-hover-bg-color);
 }
+
+/*
+TABLE PAGINATION CONTROLS STYING 
+-----------------------------------
+The below styles are for the table pagination controls.
+*/
+.pagination-btn {
+  background-color: transparent;
+  color: var(--table-ui-fg-color);
+  border: none;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  cursor: pointer;
+  transition: var(--base-transition);
+  padding: 4px;
+  border-radius: var(--base-border-radius);
+  min-height: 35px;
+  min-width: 35px;
+}
+
+.pagination-btn.pagination-active {
+  border: 2px solid var(--table-ui-active-bg-color);
+}
+
+.pagination-btn:hover {
+  background-color: var(--table-ui-hover-bg-color);
+}

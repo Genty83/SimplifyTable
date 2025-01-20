@@ -1,4 +1,3 @@
-
 // Imports
 import { createBaseElement } from "../../utils/htmlUtils.js";
 
@@ -124,69 +123,92 @@ export class TableRenderer {
   }
 
   /**
-   * Create elements for the bottom container, 
-   * including pagination controls and rows per page dropdown.
-   */
-  createBottomContainerElements() {
-    this.bottomContainer = createBaseElement({
-      tag: "div",
-      attributes: { class: "bottom-container" },
+ * Create elements for the bottom container,
+ * including pagination controls and rows per page dropdown.
+ */
+createBottomContainerElements() {
+  this.bottomContainer = createBaseElement({
+    tag: "div",
+    attributes: { class: "bottom-container" },
+  });
+
+  this.bottomLeftContainer = createBaseElement({
+    tag: "div",
+    attributes: { class: "flex-row base-gap align-center" },
+  });
+
+  this.rowsPerPageLabel = createBaseElement({
+    tag: "label",
+    attributes: { for: "rows-per-page", textContent: "Rows per page:" },
+    textContent: "Rows per page:",
+  });
+
+  this.rowsPerPageSelect = createBaseElement({
+    tag: "select",
+    attributes: { class: "table-control rows-per-page", id: "rows-per-page" },
+    children: this.rowsPerPageList.map((value) =>
+      createBaseElement({
+        tag: "option",
+        attributes: { value: value },
+        textContent: value,
+      
+      })
+    ),
+  });
+  this.rowsPerPageSelect.value = this.rowsPerPage;
+
+  // Add event listener to handle changes in rows per page
+  this.rowsPerPageSelect.addEventListener("change", (event) => {
+    this.rowsPerPage = parseInt(event.target.value);
+    this.currentPage = 1; // Reset to the first page
+  
+    this.getData().then(() => {
+      this.updateBody(); // Update the table body with new data
+    }).catch((error) => {
+      console.error("Error fetching data:", error);
     });
+  });
+  
+  
+  this.bottomLeftContainer.appendChild(this.rowsPerPageLabel);
+  this.bottomLeftContainer.appendChild(this.rowsPerPageSelect);
 
-    this.bottomLeftContainer = createBaseElement({
-      tag: "div",
-      attributes: { class: "flex-row base-gap align-center" },
-    });
+  this.paginationContainer = createBaseElement({
+    tag: "div",
+    attributes: { class: "pagination-container flex-row base-gap" },
+  });
 
-    this.rowsPerPageLabel = createBaseElement({
-      tag: "label",
-      attributes: { for: "rows-per-page", textContent: "Rows per page:" },
-      textContent: "Rows per page:",
-    });
+  this.bottomRightContainer = createBaseElement({
+    tag: "div",
+    attributes: { class: "flex-row align-center base-gap" },
+  });
 
-    this.rowsPerPageSelect = createBaseElement({
-      tag: "select",
-      attributes: { class: "table-control rows-per-page", id: "rows-per-page" },
-      children: this.rowsPerPageList.map((value) =>
-        createBaseElement({
-          tag: "option",
-          attributes: { value: value },
-          textContent: value,
-        })
-      ),
-    });
+  this.gotoPageLabel = createBaseElement({
+    tag: "label",
+    attributes: { for: "goto-page", textContent: "Go to page:" },
+    textContent: "Go to page:",
+  });
 
-    this.bottomLeftContainer.appendChild(this.rowsPerPageLabel);
-    this.bottomLeftContainer.appendChild(this.rowsPerPageSelect);
+  this.gotoPageSelect = createBaseElement({
+    tag: "select",
+    attributes: { class: "table-control goto-page", id: "goto-page" },
+  });
 
-    this.paginationContainer = createBaseElement({
-      tag: "div",
-      attributes: { class: "pagination-container" },
-    });
+  // Add event listener to handle page changes
+  this.gotoPageSelect.addEventListener("change", (event) => {
+    this.currentPage = parseInt(event.target.value);
+    this.getData(this.currentPage); // Fetch data for the selected page
+    this.updateBody(); // Update the table body with new data
+  });
 
-    this.bottomRightContainer = createBaseElement({
-      tag: "div",
-      attributes: { class: "flex-row align-center base-gap" },
-    });
+  this.bottomRightContainer.appendChild(this.gotoPageLabel);
+  this.bottomRightContainer.appendChild(this.gotoPageSelect);
 
-    this.gotoPageLabel = createBaseElement({
-      tag: "label",
-      attributes: { for: "goto-page", textContent: "Go to page:" },
-      textContent: "Go to page:",
-    });
+  this.bottomContainer.appendChild(this.bottomLeftContainer);
+  this.bottomContainer.appendChild(this.paginationContainer);
+  this.bottomContainer.appendChild(this.bottomRightContainer);
 
-    this.gotoPageSelect = createBaseElement({
-      tag: "select",
-      attributes: { class: "table-control goto-page", id: "goto-page" },
-    });
+  this.container.appendChild(this.bottomContainer);
+}
 
-    this.bottomRightContainer.appendChild(this.gotoPageLabel);
-    this.bottomRightContainer.appendChild(this.gotoPageSelect);
-
-    this.bottomContainer.appendChild(this.bottomLeftContainer);
-    this.bottomContainer.appendChild(this.paginationContainer);
-    this.bottomContainer.appendChild(this.bottomRightContainer);
-
-    this.container.appendChild(this.bottomContainer);
-  }
 }

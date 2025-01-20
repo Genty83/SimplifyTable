@@ -6,6 +6,7 @@ import { TableRenderer } from "../components/tableRenderer.js";
 import { FetchData } from "../api/fetchApi.js";
 import { Header } from "./headers.js";
 import { Body } from "./body.js";
+import { Pagination } from "../models/pagination.js";
 
 /**
  * SimplifyTable class for creating and managing a dynamic, interactive table.
@@ -54,6 +55,12 @@ export class SimplifyTable extends TableRenderer {
     await this.getData();
     // Render table
     this.renderTable();
+
+    // Initialize and render pagination if enabled
+    if (this.hasPagination) {
+      this.pagination = new Pagination(this, this.options);
+      this.pagination.renderPagination();
+    }
   }
 
   renderTable() {
@@ -61,15 +68,20 @@ export class SimplifyTable extends TableRenderer {
     this.header.renderHeaders(this.uniqueColumnValues);
     this.body = new Body(this, this.options);
     this.body.renderBody();
+    this.updateRowsPerPageParagraph(
+      this.currentPage,
+      this.rowsPerPage,
+      this.data.totalResults
+    );
   }
 
   /**
    * Fetches data from the specified URL and renders the table.
    */
-  async getData() {
+  async getData(page = this.currentPage) {
     try {
       const data = await this.fetchApi.fetch({
-        page: this.currentPage,
+        page: page,
         limit: this.rowsPerPage,
       });
       this.data = {
@@ -92,6 +104,54 @@ export class SimplifyTable extends TableRenderer {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
+  }
+
+  async init() {
+    // Create a new instance of FetchData
+    this.fetchApi = new FetchData(this.url, this.hasPagination);
+
+    // Render table elements
+    this.renderElements();
+    // Fetch data
+    await this.getData();
+    // Render table
+    this.renderTable();
+
+    // Initialize and render pagination if enabled
+    if (this.hasPagination) {
+      this.pagination = new Pagination(this, this.options);
+      this.pagination.renderPagination();
+      this.populateGotoPageSelect(); // Populate the gotoPage select element
+    }
+  }
+
+  updateBody() {
+    // Fetch data for the new page
+    this.getData()
+      .then(() => {
+        // Clear the existing body content
+        const tableBody = document.querySelector(`#${this.tableId} tbody`);
+        tableBody.innerHTML = "";
+
+        // Render the new body content
+        this.body.renderBody();
+
+        // Update the rows per page paragraph
+        this.updateRowsPerPageParagraph(
+          this.currentPage,
+          this.rowsPerPage,
+          this.data.totalResults
+        );
+
+        // Update pagination controls
+        if (this.hasPagination) {
+          this.pagination.updatePagination();
+          this.populateGotoPageSelect(); // Populate the gotoPage select element
+        }
+      })
+      .catch((error) => {
+        console.error("Error updating body:", error);
+      });
   }
 
   /**
@@ -117,5 +177,35 @@ export class SimplifyTable extends TableRenderer {
     });
 
     return uniqueColumnValues;
+  }
+
+  /**
+   * Update the rowsPerPageParagraph with the current range of rows and total results.
+   * @param {number} currentPage - The current page number.
+   * @param {number} rowsPerPage - The number of rows per page.
+   * @param {number} totalResults - The total number of results.
+   */
+  updateRowsPerPageParagraph(currentPage, rowsPerPage, totalResults) {
+    const startRow = (currentPage - 1) * rowsPerPage + 1;
+    const endRow = Math.min(currentPage * rowsPerPage, totalResults);
+    const totalRows = totalResults;
+
+    this.rowsPerPageParagraph.textContent = `Showing Rows ${startRow} - ${endRow} of ${totalRows}`;
+  }
+
+  getTotalPages() {
+    return Math.ceil(this.data.totalResults / this.rowsPerPage);
+  }
+
+  populateGotoPageSelect() {
+    const totalPages = this.getTotalPages();
+    this.gotoPageSelect.innerHTML = ""; // Clear existing options
+
+    for (let i = 1; i <= totalPages; i++) {
+      const option = document.createElement("option");
+      option.value = i;
+      option.textContent = `Page ${i}`;
+      this.gotoPageSelect.appendChild(option);
+    }
   }
 }
